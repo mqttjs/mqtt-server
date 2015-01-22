@@ -43,7 +43,7 @@ describe('server', function(){
     });
   });
 
-  it('should start multiple servers and allow connection', function(done){
+  it('should have an option to disable event emitting', function(done){
     mqttServer.startServers({
       ssl: {
         key: fs.readFileSync('./test/support/server.key'),
