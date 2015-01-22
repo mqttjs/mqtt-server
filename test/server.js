@@ -19,8 +19,10 @@ describe('server', function(){
         wss: 9004
       }
     }, function(client){
-      client.connack({
-        returnCode: 0
+      client.on('connect', function(){
+        client.connack({
+          returnCode: 0
+        });
       });
     }, function(){
       var c1 = mqtt.connect('mqtt://0.0.0.0:9001');
@@ -38,6 +40,36 @@ describe('server', function(){
           });
         });
       });
+    });
+  });
+
+  it('should start multiple servers and allow connection', function(done){
+    mqttServer.startServers({
+      ssl: {
+        key: fs.readFileSync('./test/support/server.key'),
+        cert: fs.readFileSync('./test/support/server.crt')
+      },
+      ports: {
+        mqtt: 9005,
+        mqtts: 9006,
+        ws: 9007,
+        wss: 9008
+      },
+      emitEvents: false
+    }, function(client){
+      client.on('connect', function(){
+        assert(false);
+      });
+      client.on('data', function(){
+        setImmediate(function(){
+          client.connack({
+            returnCode: 0
+          });
+        });
+      })
+    }, function(){
+      var c1 = mqtt.connect('mqtt://0.0.0.0:9001');
+      c1.on('connect', done)
     });
   });
 });

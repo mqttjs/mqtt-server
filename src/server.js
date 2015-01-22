@@ -17,7 +17,14 @@ var defaults = {
     mqtts: 8883,
     ws: 1884,
     wss: 8884
-  }
+  },
+  emitEvents: true
+};
+
+var wrapClient = function(client, options) {
+  return mqtt(client, {
+    notData: !options.emitEvents
+  })
 };
 
 module.exports = {
@@ -25,10 +32,10 @@ module.exports = {
     _.defaults(options, defaults);
 
     var servers = {};
-    servers['mqtt'] = this.createServer(clientHandler);
-    servers['mqtts'] = this.createSecureServer(options.ssl, clientHandler);
-    servers['ws'] = this.createWebSocketServer(clientHandler);
-    servers['wss'] = this.createSecureWebSocketServer(options.ssl, clientHandler);
+    servers['mqtt'] = this.createServer(options, clientHandler);
+    servers['mqtts'] = this.createSecureServer(options, clientHandler);
+    servers['ws'] = this.createWebSocketServer(options, clientHandler);
+    servers['wss'] = this.createSecureWebSocketServer(options, clientHandler);
 
     servers['mqtt'].listen(options.ports.mqtt, function(){
       servers['mqtts'].listen(options.ports.mqtts, function(){
@@ -40,31 +47,31 @@ module.exports = {
 
     return servers;
   },
-  createServer: function(clientHandler) {
-    return net.createServer(function(connection){
-      clientHandler(mqtt(connection));
+  createServer: function(options, clientHandler) {
+    return net.createServer(function(client){
+      clientHandler(wrapClient(client, options));
     });
   },
   createSecureServer: function(options, clientHandler){
-    return tls.createServer(options, function(connection){
-      clientHandler(mqtt(connection));
+    return tls.createServer(options.ssl, function(client){
+      clientHandler(wrapClient(client, options));
     });
   },
-  attachServer: function(server, clientHandler) {
+  attachServer: function(server, options, clientHandler) {
     (new ws.Server({
       server: server
     })).on('connection', function(ws) {
-      clientHandler(mqtt(wsStream(ws)));
+      clientHandler(wrapClient(wsStream(ws), options));
     });
   },
-  createWebSocketServer: function(clientHandler){
+  createWebSocketServer: function(options, clientHandler){
     var server = http.createServer();
-    this.attachServer(server, clientHandler);
+    this.attachServer(server, options, clientHandler);
     return server;
   },
   createSecureWebSocketServer: function(options, clientHandler){
-    var server = https.createServer(options);
-    this.attachServer(server, clientHandler);
+    var server = https.createServer(options.ssl);
+    this.attachServer(server, options, clientHandler);
     return server;
   }
 };
