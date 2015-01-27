@@ -10,25 +10,35 @@ npm install mqtt-server --save
 
 ## Examples
 
-Launch all available servers:
+Launch a bunch of mqtt servers (uses `create-server-stream` under the hood):
 
 ```js
 var fs = require('fs');
 var mqttServer = require('mqtt-server');
 
 mqttServer({
+  mqtt: 'tcp://localhost:1883',
+  mqtts: 'ssl://localhost:8883',
+  mqttws: 'ws://localhost:1884',
+  mqtwss: 'wss://localhost:8884'
+}, {
   ssl: {
     key: fs.readFileSync('./server.key'),
     cert: fs.readFileSync('./server.crt')
-  }
+  },
+  emitEvents: true // default
 }, function(client){
   client.connack({
     returnCode: 0
   });
-}, function(){
-  console.log('listening on 1883, 8883, 1884, 8884');
+});
+
+servers.listen(function(){
+  console.log('listening!');
 });
 ```
+
+For more detailed information about the server configuration check out [create-server-stream](https://github.com/mqttjs/create-stream-server).
 
 ## Contributing
 
