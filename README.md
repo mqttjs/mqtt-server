@@ -1,4 +1,5 @@
-# mqtt-server&nbsp;&nbsp;&nbsp;[![Build Status](https://travis-ci.org/mqttjs/mqtt-server.png)](https://travis-ci.org/mqttjs/mqtt-server)
+# mqtt-server&nbsp;&nbsp;&nbsp;[![Build Status](https://travis-ci.org/mqttjs/mqtt-server.png)](https://travis-ci.org/mqttjs/mqtt-server) [![npm version](https://badge.fury.io/js/mqtt-server.svg)](http://badge.fury.io/js/mqtt-server)
+
 
 Simple API to build your own MQTT server on top of it.
 
@@ -10,32 +11,35 @@ npm install mqtt-server --save
 
 ## Examples
 
-Launch all available servers:
+Launch a bunch of mqtt servers (uses `create-stream-server` under the hood):
 
 ```js
 var fs = require('fs');
-var mqtt = require('mqtt-server');
+var mqttServer = require('mqtt-server');
 
-mqtt.startServers({
+mqttServer({
+  mqtt: 'tcp://localhost:1883',
+  mqtts: 'ssl://localhost:8883',
+  mqttws: 'ws://localhost:1884',
+  mqtwss: 'wss://localhost:8884'
+}, {
   ssl: {
     key: fs.readFileSync('./server.key'),
     cert: fs.readFileSync('./server.crt')
   },
-  ports: {
-    mqtt: 9001,
-    mqtts: 9002,
-    ws: 9003,
-    wss: 9004
-  }
+  emitEvents: true // default
 }, function(client){
-  // the client handler
   client.connack({
     returnCode: 0
   });
-}, function(){
-  console.log('listening');
+});
+
+servers.listen(function(){
+  console.log('listening!');
 });
 ```
+
+For more detailed information about the server configuration check out [create-stream-server](https://github.com/mqttjs/create-stream-server).
 
 ## Contributing
 
@@ -55,7 +59,6 @@ mqtt-server is only possible due to the excellent work of the following contribu
 <tr><th align="left">Adam Rudd</th><td><a href="https://github.com/adamvr">GitHub/adamvr</a></td><td><a href="http://twitter.com/adam_vr">Twitter/@adam_vr</a></td></tr>
 </tbody></table>
 
-License
--------
+### License
 
 MIT
