@@ -1,4 +1,5 @@
-# mqtt-server&nbsp;&nbsp;&nbsp;[![Build Status](https://travis-ci.org/mqttjs/mqtt-server.png)](https://travis-ci.org/mqttjs/mqtt-server)
+# mqtt-server&nbsp;&nbsp;&nbsp;[![Build Status](https://travis-ci.org/mqttjs/mqtt-server.png)](https://travis-ci.org/mqttjs/mqtt-server) [![npm version](https://badge.fury.io/js/mqtt-server.svg)](http://badge.fury.io/js/mqtt-server)
+
 
 Simple API to build your own MQTT server on top of it.
 
