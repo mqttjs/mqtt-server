@@ -54,11 +54,11 @@ describe('server', function(){
         assert(false);
       });
       client.on('data', function(){
-        setImmediate(function(){
+        setTimeout(function(){
           client.connack({
             returnCode: 0
           });
-        });
+        }, 10);
       })
     });
 
