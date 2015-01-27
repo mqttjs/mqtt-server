@@ -14,26 +14,19 @@ Launch all available servers:
 
 ```js
 var fs = require('fs');
-var mqtt = require('mqtt-server');
+var mqttServer = require('mqtt-server');
 
-mqtt.startServers({
+mqttServer({
   ssl: {
     key: fs.readFileSync('./server.key'),
     cert: fs.readFileSync('./server.crt')
-  },
-  ports: {
-    mqtt: 9001,
-    mqtts: 9002,
-    ws: 9003,
-    wss: 9004
   }
 }, function(client){
-  // the client handler
   client.connack({
     returnCode: 0
   });
 }, function(){
-  console.log('listening');
+  console.log('listening on 1883, 8883, 1884, 8884');
 });
 ```
 
@@ -55,7 +48,6 @@ mqtt-server is only possible due to the excellent work of the following contribu
 <tr><th align="left">Adam Rudd</th><td><a href="https://github.com/adamvr">GitHub/adamvr</a></td><td><a href="http://twitter.com/adam_vr">Twitter/@adam_vr</a></td></tr>
 </tbody></table>
 
-License
--------
+### License
 
 MIT
