@@ -1,6 +1,6 @@
 {
   "name": "mqtt-server",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Simple API to build your own MQTT server on top of it.",
   "main": "index.js",
   "contributors": [
