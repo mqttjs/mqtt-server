@@ -10,7 +10,7 @@ npm install mqtt-server --save
 
 ## Examples
 
-Launch a bunch of mqtt servers (uses `create-server-stream` under the hood):
+Launch a bunch of mqtt servers (uses `create-stream-server` under the hood):
 
 ```js
 var fs = require('fs');
@@ -38,7 +38,7 @@ servers.listen(function(){
 });
 ```
 
-For more detailed information about the server configuration check out [create-server-stream](https://github.com/mqttjs/create-stream-server).
+For more detailed information about the server configuration check out [create-stream-server](https://github.com/mqttjs/create-stream-server).
 
 ## Contributing
 
