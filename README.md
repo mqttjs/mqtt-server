@@ -17,7 +17,7 @@ Launch a bunch of mqtt servers (uses `create-stream-server` under the hood):
 var fs = require('fs');
 var mqttServer = require('mqtt-server');
 
-mqttServer({
+var servers = mqttServer({
   mqtt: 'tcp://localhost:1883',
   mqtts: 'ssl://localhost:8883',
   mqttws: 'ws://localhost:1884',
