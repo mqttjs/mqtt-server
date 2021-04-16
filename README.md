@@ -29,8 +29,10 @@ var servers = mqttServer({
   },
   emitEvents: true // default
 }, function(client){
-  client.connack({
-    returnCode: 0
+  client.on('connect', function(){
+    client.connack({
+      returnCode: 0
+    });
   });
 });
 
